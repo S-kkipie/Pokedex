@@ -21,7 +21,6 @@ function App() {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=1000")
       .then((response) => response.json())
       .then((data) => {
-        // Crear un array de promesas para cada solicitud fetch de Pokemon
         const fetchPromises = data.results.map((value: any) => {
           return fetch(value.url)
             .then((response) => response.json())
@@ -41,12 +40,8 @@ function App() {
               );
             });
         });
-
-        // Utilizar Promise.all para esperar a que todas las promesas se resuelvan
         Promise.all(fetchPromises).then((pokemonComponents) => {
-          // Actualizar el estado con todos los componentes Pokémon
           setPokeList(pokemonComponents);
-          // Marcar que los datos han terminado de cargarse
           setLoadingData(false);
         });
       });
@@ -54,24 +49,24 @@ function App() {
 
   return (
     <>
-      <nav>
-        <img src="./pokemon-logo.svg" alt="Pokemon" width={150} />
-        <div className="options">
-          <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <nav>
+          <img src="./pokemon-logo.svg" alt="Pokemon" width={150} />
+          <div className="options">
             <ModeToggle />
-          </ThemeProvider>
+          </div>
+        </nav>
+        <div className="pokedexContainer">
+          <div className="search">
+            <Input placeholder="Comienza a buscar por el nombre o el id de la Pokedex Nacional" />
+            <Button>Buscar</Button>
+          </div>
+          <div className="results"></div>
+          <div className="defaultPokemons">
+            {loadingData ? <h2>Cargando...</h2> : pokeList}
+          </div>
         </div>
-      </nav>
-      <div className="pokedexContainer">
-        <div className="search">
-          <Input placeholder="Comienza a buscar por el nombre o el id de la Pokedex Nacional" />
-          <Button>Buscar</Button>
-        </div>
-        <div className="results"></div>
-        <div className="defaultPokemons">
-          {loadingData ? <h2>Cargando...</h2> : pokeList}
-        </div>
-      </div>
+      </ThemeProvider>
     </>
   );
 }
