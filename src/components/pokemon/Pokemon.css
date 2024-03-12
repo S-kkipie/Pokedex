@@ -1,0 +1,26 @@
+.pokemonItem {
+  border: 1px solid hsl(var(--border));
+  border-radius: 5px;
+  width: 200px;
+  display: flex;
+  flex-flow: column;
+  padding: 0;
+}
+.pokemonItem .pokemonData {
+  padding: 0 15px 15px 15px;
+}
+.pokemonItem .id {
+  font-size: 0.75rem;
+}
+.pokemonItem .name {
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 1px;
+}
+.types {
+  padding: 0;
+}
+.pokemonItem .pokemonData .types ul {
+  display: flex;
+  gap: 15px;
+}
