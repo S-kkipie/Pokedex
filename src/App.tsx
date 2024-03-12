@@ -33,7 +33,7 @@ function App() {
     <>
       <nav>
         <img
-          src="src/assets/International_Pokémon_logo.svg.png"
+          src="./src/assets/International_Pokémon_logo.svg.png"
           alt="Pokemon"
           width={150}
         />
