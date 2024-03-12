@@ -32,11 +32,7 @@ function App() {
   return (
     <>
       <nav>
-        <img
-          src="./International_Pokémon_logo.svg.png"
-          alt="Pokemon"
-          width={150}
-        />
+        <img src="./pokemon-logo.svg" alt="Pokemon" width={150} />
         <div className="options">
           <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
             <ModeToggle />
