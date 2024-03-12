@@ -6,6 +6,15 @@ import { Button } from "./components/ui/button";
 import Pokemon from "./components/pokemon/pokemon";
 import { useEffect, useState } from "react";
 import { JSX } from "react/jsx-runtime";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 Object.defineProperty(String.prototype, "mayusculaPrimeraLetra", {
   value: function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -13,12 +22,15 @@ Object.defineProperty(String.prototype, "mayusculaPrimeraLetra", {
   writable: true,
   configurable: true,
 });
-
+const valores = window.location.search;
+const urlParams = new URLSearchParams(valores);
+var offset = urlParams.get("offset");
+var offsetValue = offset !== null ? parseInt(offset) : 0;
 function App() {
   const [pokeList, setPokeList] = useState<JSX.Element[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   useEffect(() => {
-    fetch("https://pokeapi.co/api/v2/pokemon?limit=1000")
+    fetch("https://pokeapi.co/api/v2/pokemon?limit=12&offset=" + offsetValue)
       .then((response) => response.json())
       .then((data) => {
         const fetchPromises = data.results.map((value: any) => {
@@ -64,6 +76,16 @@ function App() {
           <div className="results"></div>
           <div className="defaultPokemons">
             {loadingData ? <h2>Cargando...</h2> : pokeList}
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious href={"?offset=" + (offsetValue - 12)} />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext href={"?offset=" + (offsetValue + 12)} />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           </div>
         </div>
       </ThemeProvider>

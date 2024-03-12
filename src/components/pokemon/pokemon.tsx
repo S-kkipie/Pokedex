@@ -11,7 +11,7 @@ const Pokemon: React.FC<PokemonProps> = ({ imgSrc, id, name, types }) => {
   const listOfTypes = types.map((value, index) => <li key={index}>{value}</li>);
 
   return (
-    <div className="pokemonItem">
+    <div className="pokemonItem shadow">
       <img className="pokemonImg" src={imgSrc} alt="img" />
       <div className="pokemonData">
         <p className="id">N.º {id}</p>
