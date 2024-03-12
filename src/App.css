@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+#root {
+  border: none;
+  padding: 0;
+}
+div {
+  padding: 10px;
+}
+.options {
+  position: absolute;
+  right: 0;
+}
+nav {
+  padding: 5px;
+  align-items: center;
+  display: flex;
+  border-bottom: 2px solid hsl(var(--border));
+}
+.pokedexContainer {
+  padding: 15px 30px;
+}
+.search {
+  display: flex;
+  gap: 30px;
+}
