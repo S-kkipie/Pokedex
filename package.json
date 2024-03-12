@@ -1,7 +1,7 @@
 {
   "name": "github",
   "private": true,
-  "homepage": "https://s-kkipie.github.io/",
+  "homepage": "https://s-kkipie.github.io/Pokedex/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {

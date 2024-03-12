@@ -4,7 +4,7 @@ import { defineConfig } from "vite"
  
 export default defineConfig({
   plugins: [react()],
-  base: "/S-kkipie.github.io/",
+  base: "/Pokedex/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
