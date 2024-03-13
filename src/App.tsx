@@ -66,7 +66,7 @@ function App() {
       });
   }, []);
   function clickHandler() {
-    fetch("https://pokeapi.co/api/v2/pokemon/" + inputValue)
+    fetch("https://pokeapi.co/api/v2/pokemon/" + inputValue.toLowerCase())
       .then((response) => response.json())
       .then((data) => {
         setError(false);
