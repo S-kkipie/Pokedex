@@ -88,6 +88,7 @@ const Pokemon: React.FC<PokemonProps> = ({
             </div>
             <hr />
             <h1 style={{ marginTop: 24 }}>STATS:</h1>
+            <h5>Desliza el cursor por el diagrama</h5>
             <div className="mt-3 h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data}>

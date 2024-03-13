@@ -62,7 +62,34 @@ function App() {
         });
       });
   }, []);
-
+  const [inputValue, setInputValue] = useState("");
+  function clickHandler() {
+    fetch("https://pokeapi.co/api/v2/pokemon/" + inputValue)
+      .then((response) => response.json())
+      .then((data) =>
+        setPokeList([
+          <Pokemon
+            stats={data.stats}
+            key={data.id}
+            imgSrc={
+              "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" +
+              data.id +
+              ".png"
+            }
+            id={data.id}
+            name={data.name.mayusculaPrimeraLetra()}
+            types={data.types.map(
+              (types: {
+                type: { name: { mayusculaPrimeraLetra: () => any } };
+              }) => types.type.name.mayusculaPrimeraLetra()
+            )}
+          />,
+        ])
+      );
+  }
+  function changeHandler(e: any) {
+    setInputValue(e.target.value);
+  }
   return (
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -74,8 +101,12 @@ function App() {
         </nav>
         <div className="pokedexContainer">
           <div className="search">
-            <Input placeholder="Comienza a buscar por el nombre o el id de la Pokedex Nacional" />
-            <Button>Buscar</Button>
+            <Input
+              onChange={changeHandler}
+              value={inputValue}
+              placeholder="Comienza a buscar por el nombre o el id de la Pokedex Nacional"
+            />
+            <Button onClick={clickHandler}>Buscar</Button>
           </div>
           <div className="results"></div>
           <div className="defaultPokemons">
