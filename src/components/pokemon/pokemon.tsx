@@ -95,7 +95,7 @@ const Pokemon: React.FC<PokemonProps> = ({
                         dataKey="stat"
                         style={
                           {
-                            fill: "hsl(var(--foreground))",
+                            fill: "hsl(var(--primary))",
                             opacity: 0.9,
                           } as React.CSSProperties
                         }
