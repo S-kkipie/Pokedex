@@ -21,7 +21,7 @@
 .types {
   padding: 0;
 }
-.pokemonItem .pokemonData .types ul {
+.types ul {
   display: flex;
   gap: 15px;
 }

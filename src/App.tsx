@@ -6,6 +6,7 @@ import { Button } from "./components/ui/button";
 import Pokemon from "./components/pokemon/pokemon";
 import { useEffect, useState } from "react";
 import { JSX } from "react/jsx-runtime";
+
 import {
   Pagination,
   PaginationContent,
@@ -37,6 +38,7 @@ function App() {
             .then((data) => {
               return (
                 <Pokemon
+                  stats={data.stats}
                   key={data.id}
                   imgSrc={
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" +
