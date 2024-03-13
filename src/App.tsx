@@ -27,6 +27,7 @@ const urlParams = new URLSearchParams(valores);
 var offset = urlParams.get("offset");
 var offsetValue = offset !== null ? parseInt(offset) : 0;
 function App() {
+  const [showPagination, setShowPagination] = useState(true);
   const [pokeList, setPokeList] = useState<JSX.Element[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [inputValue, setInputValue] = useState("");
@@ -62,13 +63,17 @@ function App() {
         Promise.all(fetchPromises).then((pokemonComponents) => {
           setPokeList(pokemonComponents);
           setLoadingData(false);
+          setShowPagination(true);
         });
       });
   }, []);
   function clickHandler() {
+    setLoadingData(true);
     fetch("https://pokeapi.co/api/v2/pokemon/" + inputValue.toLowerCase())
       .then((response) => response.json())
       .then((data) => {
+        setShowPagination(false);
+        setLoadingData(false);
         setError(false);
         setPokeList([
           <Pokemon
@@ -89,7 +94,12 @@ function App() {
           />,
         ]);
       })
-      .catch(() => setError(true));
+      .catch(() => {
+        setShowPagination(false);
+        setPokeList([]);
+        setLoadingData(false);
+        setError(true);
+      });
   }
   function changeHandler(e: any) {
     setInputValue(e.target.value);
@@ -98,7 +108,10 @@ function App() {
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <nav>
-          <img src="./pokemon-logo.svg" alt="Pokemon" width={150} />
+          <a href="">
+            <img src="./pokemon-logo.svg" alt="Pokemon" width={150} />
+          </a>
+
           <div className="options">
             <ModeToggle />
           </div>
@@ -127,23 +140,29 @@ function App() {
           <div className="results"></div>
           <div className="defaultPokemons">
             {loadingData ? <h2>Cargando...</h2> : pokeList}
-            <Pagination>
-              <PaginationContent>
-                {offsetValue === 0 ? (
-                  <></>
-                ) : (
-                  <PaginationItem>
-                    <PaginationPrevious
-                      href={"?offset=" + (offsetValue - 12)}
-                    />
-                  </PaginationItem>
-                )}
+          </div>
+          <div className="Paginations">
+            {showPagination ? (
+              <Pagination>
+                <PaginationContent>
+                  {offsetValue === 0 ? (
+                    <></>
+                  ) : (
+                    <PaginationItem>
+                      <PaginationPrevious
+                        href={"?offset=" + (offsetValue - 12)}
+                      />
+                    </PaginationItem>
+                  )}
 
-                <PaginationItem>
-                  <PaginationNext href={"?offset=" + (offsetValue + 12)} />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+                  <PaginationItem>
+                    <PaginationNext href={"?offset=" + (offsetValue + 12)} />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            ) : (
+              <hr />
+            )}
           </div>
         </div>
       </ThemeProvider>
