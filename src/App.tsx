@@ -38,7 +38,11 @@ function App() {
               return (
                 <Pokemon
                   key={data.id}
-                  imgSrc={data.sprites.front_default}
+                  imgSrc={
+                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" +
+                    data.id +
+                    ".png"
+                  }
                   id={data.id}
                   name={data.name.mayusculaPrimeraLetra()}
                   types={data.types.map(
@@ -76,9 +80,16 @@ function App() {
             {loadingData ? <h2>Cargando...</h2> : pokeList}
             <Pagination>
               <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious href={"?offset=" + (offsetValue - 12)} />
-                </PaginationItem>
+                {offsetValue === 0 ? (
+                  <></>
+                ) : (
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href={"?offset=" + (offsetValue - 12)}
+                    />
+                  </PaginationItem>
+                )}
+
                 <PaginationItem>
                   <PaginationNext href={"?offset=" + (offsetValue + 12)} />
                 </PaginationItem>
