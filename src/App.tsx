@@ -6,7 +6,8 @@ import { Button } from "./components/ui/button";
 import Pokemon from "./components/pokemon/pokemon";
 import { useEffect, useState } from "react";
 import { JSX } from "react/jsx-runtime";
-
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Pagination,
   PaginationContent,
@@ -28,6 +29,8 @@ var offsetValue = offset !== null ? parseInt(offset) : 0;
 function App() {
   const [pokeList, setPokeList] = useState<JSX.Element[]>([]);
   const [loadingData, setLoadingData] = useState(true);
+  const [inputValue, setInputValue] = useState("");
+  const [error, setError] = useState(false);
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=12&offset=" + offsetValue)
       .then((response) => response.json())
@@ -62,11 +65,11 @@ function App() {
         });
       });
   }, []);
-  const [inputValue, setInputValue] = useState("");
   function clickHandler() {
     fetch("https://pokeapi.co/api/v2/pokemon/" + inputValue)
       .then((response) => response.json())
-      .then((data) =>
+      .then((data) => {
+        setError(false);
         setPokeList([
           <Pokemon
             stats={data.stats}
@@ -84,8 +87,9 @@ function App() {
               }) => types.type.name.mayusculaPrimeraLetra()
             )}
           />,
-        ])
-      );
+        ]);
+      })
+      .catch(() => setError(true));
   }
   function changeHandler(e: any) {
     setInputValue(e.target.value);
@@ -108,6 +112,18 @@ function App() {
             />
             <Button onClick={clickHandler}>Buscar</Button>
           </div>
+          {!error ? (
+            <></>
+          ) : (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>
+                No se encontraron resultados para tu busqueda
+              </AlertDescription>
+            </Alert>
+          )}
+
           <div className="results"></div>
           <div className="defaultPokemons">
             {loadingData ? <h2>Cargando...</h2> : pokeList}
