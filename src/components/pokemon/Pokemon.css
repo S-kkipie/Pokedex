@@ -10,6 +10,9 @@
 .pokemonItem .pokemonData {
   padding: 0 15px 15px 15px;
 }
+.pokemonItem .pokemonData * {
+  text-align: left;
+}
 .pokemonItem .id {
   font-size: 0.75rem;
 }

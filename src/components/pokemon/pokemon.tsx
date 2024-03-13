@@ -60,61 +60,59 @@ const Pokemon: React.FC<PokemonProps> = ({
     },
   ];
   return (
-    <div className="pokemonItem shadow">
-      <img className="pokemonImg" src={imgSrc} alt="img" />
-      <div className="pokemonData">
-        <p className="id">N.º {id}</p>
-        <AlertDialog>
-          <AlertDialogTrigger className="name">{name}</AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{name}</AlertDialogTitle>
-              <AlertDialogDescription className="pokemonInformationContainer">
-                <img
-                  width={180}
-                  className="pokemonImg"
-                  src={imgSrc}
-                  alt="img"
-                />
-                <p className="id">N.º {id}</p>
-                <h1 className="name">{name}</h1>
-                <hr />
-                <h1 style={{ marginTop: 5 }}>Types: </h1>
-                <div style={{ marginBottom: 5 }} className="types">
-                  <ul>{listOfTypes}</ul>
-                </div>
-                <hr />
-                <h1 style={{ marginTop: 24 }}>STATS:</h1>
-                <div className="mt-3 h-[200px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={data}>
-                      <XAxis hide={true} dataKey="name" />
-                      <YAxis dataKey={"stat"} />
-                      <Tooltip />
-                      <Bar
-                        dataKey="stat"
-                        style={
-                          {
-                            fill: "hsl(var(--primary))",
-                            opacity: 0.9,
-                          } as React.CSSProperties
-                        }
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cerrar</AlertDialogCancel>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-        <div className="types">
-          <ul>{listOfTypes}</ul>
+    <AlertDialog>
+      <AlertDialogTrigger className="name">
+        <div className="pokemonItem shadow">
+          <img className="pokemonImg" src={imgSrc} alt="img" />
+          <div className="pokemonData">
+            <p className="id">N.º {id}</p>
+            <h1 className="name">{name}</h1>
+
+            <div className="types">
+              <ul>{listOfTypes}</ul>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{name}</AlertDialogTitle>
+          <AlertDialogDescription className="pokemonInformationContainer">
+            <img width={180} className="pokemonImg" src={imgSrc} alt="img" />
+            <p className="id">N.º {id}</p>
+            <h1 className="name">{name}</h1>
+            <hr />
+            <h1 style={{ marginTop: 5 }}>Types: </h1>
+            <div style={{ marginBottom: 5 }} className="types">
+              <ul>{listOfTypes}</ul>
+            </div>
+            <hr />
+            <h1 style={{ marginTop: 24 }}>STATS:</h1>
+            <div className="mt-3 h-[200px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={data}>
+                  <XAxis hide={true} dataKey="name" />
+                  <YAxis dataKey={"stat"} />
+                  <Tooltip />
+                  <Bar
+                    dataKey="stat"
+                    style={
+                      {
+                        fill: "hsl(var(--primary))",
+                        opacity: 0.9,
+                      } as React.CSSProperties
+                    }
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cerrar</AlertDialogCancel>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 export default Pokemon;
