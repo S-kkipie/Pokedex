@@ -330,48 +330,52 @@ function SelectPokedexInfo({ data }: any) {
   function VersionChangeHandler(val: any) {
     setVersion(val);
   }
-  return (
-    <>
-      <div style={{ display: "flex" }}>
-        <div>
-          <Select value={version} onValueChange={VersionChangeHandler}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Version" />
-            </SelectTrigger>
-            <SelectContent>
-              {pokeInfoArray.map((value: any, index: any) => {
-                return (
-                  value.language.name === language && (
-                    <SelectItem value={index}>
-                      {value.version.name.mayusculaPrimeraLetra()}
-                    </SelectItem>
-                  )
-                );
-              })}
-            </SelectContent>
-          </Select>
+  try {
+    return (
+      <>
+        <div style={{ display: "flex" }}>
+          <div>
+            <Select value={version} onValueChange={VersionChangeHandler}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Version" />
+              </SelectTrigger>
+              <SelectContent>
+                {pokeInfoArray.map((value: any, index: any) => {
+                  return (
+                    value.language.name === language && (
+                      <SelectItem value={index}>
+                        {value.version.name.mayusculaPrimeraLetra()}
+                      </SelectItem>
+                    )
+                  );
+                })}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Select value={language} onValueChange={LanguageChangeHandler}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Idioma" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="en">Ingles</SelectItem>
+                <SelectItem value="es">Español</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
-        <div>
-          <Select value={language} onValueChange={LanguageChangeHandler}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Idioma" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="en">Ingles</SelectItem>
-              <SelectItem value="es">Español</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-      <p className="dsp">
-        {pokeInfoArray[version].flavor_text ? (
-          pokeInfoArray[version].flavor_text.replace(/[\n\f]/g, " ")
-        ) : (
-          <p>Error</p>
-        )}
-      </p>
-    </>
-  );
+        <p className="dsp">
+          {pokeInfoArray[version].flavor_text ? (
+            pokeInfoArray[version].flavor_text.replace(/[\n\f]/g, " ")
+          ) : (
+            <p>Error</p>
+          )}
+        </p>
+      </>
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }
 function PokePagination({ id }: any) {
   return (
