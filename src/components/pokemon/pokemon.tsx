@@ -335,7 +335,10 @@ function SelectPokedexInfo({ data }: any) {
     <>
       <div style={{ display: "flex" }}>
         <div>
-          <Select value={version} onValueChange={VersionChangeHandler}>
+          <Select
+            value={version.toString()}
+            onValueChange={VersionChangeHandler}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Version" />
             </SelectTrigger>
