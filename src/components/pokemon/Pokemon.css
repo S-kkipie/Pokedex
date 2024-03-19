@@ -1,3 +1,4 @@
+/*Codigo de pokemonItem.tsx*/
 .pokemonItem {
   background-color: hsl(var(--card));
   border: 1px solid hsl(var(--border));
@@ -6,6 +7,14 @@
   display: flex;
   flex-flow: column;
   padding: 0;
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease-out;
+}
+.pokemonItem:hover {
+  transform: translateY(-5px) scale(1.005) translateZ(0);
+  box-shadow: 0 24px 36px rgba(0, 0, 0, 0.11),
+    0 24px 46px var(--box-shadow-color);
+  outline: 1px solid hsl(var(--foreground));
 }
 .pokemonItem .pokemonData {
   padding: 0 15px 15px 15px;
@@ -27,4 +36,51 @@
 .types ul {
   display: flex;
   gap: 15px;
+}
+/*Codigo de pokemon.tsx*/
+.pokemonContainer {
+  width: 80%;
+  align-self: center;
+  display: flex;
+  flex-flow: column;
+}
+.pokemonContainer .pokemonData {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+.pokemonContainer .name {
+  font-size: 50px;
+  font-weight: 500;
+}
+li.type {
+  float: left;
+  width: 32.29%;
+  border-radius: 5px;
+  margin: 0.5em 0.5em 0 0;
+  text-align: center;
+}
+div.pokemonInfo,
+div.pokemonTitle {
+  min-width: 360px;
+}
+.apexcharts-tooltip {
+  background: (hsl(var(--card)));
+  color: hsl(var(--card));
+}
+.dsp {
+  width: 400px;
+}
+.arrow_box {
+  color: #000;
+}
+.apexcharts-menu,
+.apexcharts-menu-open {
+  color: #000;
+}
+.evolutionContainer {
+  display: flex;
+}
+.evolutionImg {
+  width: 200px;
 }

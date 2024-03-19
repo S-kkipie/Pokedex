@@ -1,4 +1,5 @@
 import "./App.css";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "./components/ui/mode-togle";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import PokemonItems from "./components/pokemon/pokemonItem";
 Object.defineProperty(String.prototype, "mayusculaPrimeraLetra", {
   value: function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -22,16 +24,26 @@ Object.defineProperty(String.prototype, "mayusculaPrimeraLetra", {
   writable: true,
   configurable: true,
 });
+//const anchoVentana = window.innerWidth;
+//var mobile = anchoVentana < 400;
 const valores = window.location.search;
 const urlParams = new URLSearchParams(valores);
 var offset = urlParams.get("offset");
 var offsetValue = offset !== null ? parseInt(offset) : 0;
 function App() {
+  const navigate = useNavigate();
   const [showPagination, setShowPagination] = useState(true);
   const [pokeList, setPokeList] = useState<JSX.Element[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState(false);
+  const [reloadPage, setReloadPage] = useState(true);
+  function setAllVariables() {
+    setPokeList([]);
+    setLoadingData(false);
+    setShowPagination(true);
+    setError(false);
+  }
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=12&offset=" + offsetValue)
       .then((response) => response.json())
@@ -41,22 +53,23 @@ function App() {
             .then((response) => response.json())
             .then((data) => {
               return (
-                <Pokemon
-                  stats={data.stats}
-                  key={data.id}
-                  imgSrc={
-                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" +
-                    data.id +
-                    ".png"
-                  }
-                  id={data.id}
-                  name={data.name.mayusculaPrimeraLetra()}
-                  types={data.types.map(
-                    (types: {
-                      type: { name: { mayusculaPrimeraLetra: () => any } };
-                    }) => types.type.name.mayusculaPrimeraLetra()
-                  )}
-                />
+                <Link to={"/Pokedex/pokemon/" + data.id}>
+                  <PokemonItems
+                    key={data.id}
+                    imgSrc={
+                      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" +
+                      data.id +
+                      ".png"
+                    }
+                    id={data.id}
+                    name={data.name.mayusculaPrimeraLetra()}
+                    types={data.types.map(
+                      (types: {
+                        type: { name: { mayusculaPrimeraLetra: () => any } };
+                      }) => types.type.name.mayusculaPrimeraLetra()
+                    )}
+                  />
+                </Link>
               );
             });
         });
@@ -66,39 +79,22 @@ function App() {
           setShowPagination(true);
         });
       });
-  }, []);
-  function clickHandler() {
-    setLoadingData(true);
-    fetch("https://pokeapi.co/api/v2/pokemon/" + inputValue.toLowerCase())
+  }, [reloadPage]);
+  function logoClickHandler() {
+    setAllVariables();
+    setReloadPage(!reloadPage);
+  }
+  function pokemonClickHandler() {
+    fetch("https://pokeapi.co/api/v2/pokemon/" + inputValue)
       .then((response) => response.json())
       .then((data) => {
-        setShowPagination(false);
-        setLoadingData(false);
-        setError(false);
-        setPokeList([
-          <Pokemon
-            stats={data.stats}
-            key={data.id}
-            imgSrc={
-              "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" +
-              data.id +
-              ".png"
-            }
-            id={data.id}
-            name={data.name.mayusculaPrimeraLetra()}
-            types={data.types.map(
-              (types: {
-                type: { name: { mayusculaPrimeraLetra: () => any } };
-              }) => types.type.name.mayusculaPrimeraLetra()
-            )}
-          />,
-        ]);
+        navigate("/Pokedex/pokemon/" + data.id);
       })
       .catch(() => {
         setShowPagination(false);
-        setPokeList([]);
-        setLoadingData(false);
         setError(true);
+        setLoadingData(false);
+        setPokeList([]);
       });
   }
   function changeHandler(e: any) {
@@ -107,67 +103,93 @@ function App() {
   return (
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <nav>
-          <a href="">
-            <img src="./pokemon-logo.svg" alt="Pokemon" width={150} />
-          </a>
-
-          <div className="options">
-            <ModeToggle />
-          </div>
-        </nav>
-        <div className="pokedexContainer">
+        <nav className="topNav">
+          <Link to={"/Pokedex/"}>
+            <img
+              onClick={logoClickHandler}
+              src="/Pokedex/pokemon-logo.svg"
+              alt="Pokemon"
+              width={150}
+            />
+          </Link>
           <div className="search">
             <Input
               onChange={changeHandler}
               value={inputValue}
               placeholder="Comienza a buscar por el nombre o el id de la Pokedex Nacional"
             />
-            <Button onClick={clickHandler}>Buscar</Button>
+            <Button onClick={pokemonClickHandler}>Buscar</Button>
           </div>
-          {!error ? (
-            <></>
-          ) : (
-            <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>
-                No se encontraron resultados para tu busqueda
-              </AlertDescription>
-            </Alert>
-          )}
+          <div className="options">
+            {/* <Button variant="outline">Movimientos</Button>
+            <Button variant="outline">Habilidades</Button>
+            <Button variant="outline">Items</Button>
+            <Button variant="outline">Button</Button> */}
 
-          <div className="results"></div>
-          <div className="defaultPokemons">
-            {loadingData ? <h2>Cargando...</h2> : pokeList}
+            <ModeToggle />
           </div>
-          <div className="Paginations">
-            {showPagination ? (
-              <Pagination>
-                <PaginationContent>
-                  {offsetValue === 0 ? (
+        </nav>
+
+        <Routes>
+          <Route
+            path="/Pokedex/pokemon/:id"
+            element={
+              <>
+                <Pokemon />
+              </>
+            }
+          />
+          <Route
+            path="/Pokedex"
+            element={
+              <>
+                <div className="pokedexContainer">
+                  {!error ? (
                     <></>
                   ) : (
-                    <PaginationItem>
-                      <PaginationPrevious
-                        href={"?offset=" + (offsetValue - 12)}
-                      />
-                    </PaginationItem>
+                    <Alert variant="destructive">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertTitle>Error</AlertTitle>
+                      <AlertDescription>
+                        No se encontraron resultados para tu busqueda
+                      </AlertDescription>
+                    </Alert>
                   )}
+                  <div className="defaultPokemons">
+                    {loadingData ? <h2>Cargando...</h2> : pokeList}
+                  </div>
+                  <div className="Paginations">
+                    {showPagination ? (
+                      <Pagination>
+                        <PaginationContent>
+                          {offsetValue === 0 ? (
+                            <></>
+                          ) : (
+                            <PaginationItem>
+                              <PaginationPrevious
+                                href={"?offset=" + (offsetValue - 12)}
+                              />
+                            </PaginationItem>
+                          )}
 
-                  <PaginationItem>
-                    <PaginationNext href={"?offset=" + (offsetValue + 12)} />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            ) : (
-              <hr />
-            )}
-          </div>
-        </div>
+                          <PaginationItem>
+                            <PaginationNext
+                              href={"?offset=" + (offsetValue + 12)}
+                            />
+                          </PaginationItem>
+                        </PaginationContent>
+                      </Pagination>
+                    ) : (
+                      <hr />
+                    )}
+                  </div>
+                </div>
+              </>
+            }
+          ></Route>
+        </Routes>
       </ThemeProvider>
     </>
   );
 }
-
 export default App;
