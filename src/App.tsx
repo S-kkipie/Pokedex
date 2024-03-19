@@ -85,7 +85,7 @@ function App() {
     setReloadPage(!reloadPage);
   }
   function pokemonClickHandler() {
-    fetch("https://pokeapi.co/api/v2/pokemon/" + inputValue)
+    fetch("https://pokeapi.co/api/v2/pokemon/" + inputValue.toLowerCase())
       .then((response) => response.json())
       .then((data) => {
         navigate("/Pokedex/pokemon/" + data.id);
