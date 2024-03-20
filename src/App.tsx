@@ -25,7 +25,7 @@ Object.defineProperty(String.prototype, "mayusculaPrimeraLetra", {
   writable: true,
   configurable: true,
 });
-let anchoVentana = window.innerWidth;
+// let anchoVentana = window.innerWidth;
 //var mobile = anchoVentana < 400;
 const valores = window.location.search;
 const urlParams = new URLSearchParams(valores);
