@@ -329,6 +329,7 @@ function SelectPokedexInfo({ data }: any) {
   }
   function VersionChangeHandler(val: any) {
     setVersion(val);
+    console.log(val);
   }
 
   return (
@@ -346,7 +347,7 @@ function SelectPokedexInfo({ data }: any) {
               {pokeInfoArray.map((value: any, index: any) => {
                 return (
                   value.language.name === language && (
-                    <SelectItem value={index}>
+                    <SelectItem value={index.toString()}>
                       {value.version.name.mayusculaPrimeraLetra()}
                     </SelectItem>
                   )
