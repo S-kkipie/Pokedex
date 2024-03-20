@@ -3,6 +3,23 @@
   padding: 0;
   box-sizing: border-box;
 }
+html {
+  overflow-y: scroll;
+}
+html::-webkit-scrollbar-track {
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--background));
+}
+
+html::-webkit-scrollbar {
+  width: 10px;
+  background-color: hsl(var(--card));
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--border));
+}
+
 #root {
   border: none;
   padding: 0;
@@ -15,8 +32,6 @@ div {
 .options {
   display: flex;
   gap: 10px;
-  position: absolute;
-  right: 0;
 }
 nav.topNav {
   padding: 5px;
@@ -26,13 +41,20 @@ nav.topNav {
   position: sticky;
   width: 100%;
 }
-.pokedexContainer {
-  padding: 15px 30px;
+.logoImg {
+  flex: 4;
+}
+.options {
+  flex: 1;
 }
 .search {
+  flex: 25;
   width: 40%;
   display: flex;
   gap: 30px;
+}
+.pokedexContainer {
+  padding: 15px 30px;
 }
 .defaultPokemons {
   width: 100%;

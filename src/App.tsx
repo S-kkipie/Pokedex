@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { JSX } from "react/jsx-runtime";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Pagination,
   PaginationContent,
@@ -24,7 +25,7 @@ Object.defineProperty(String.prototype, "mayusculaPrimeraLetra", {
   writable: true,
   configurable: true,
 });
-//const anchoVentana = window.innerWidth;
+let anchoVentana = window.innerWidth;
 //var mobile = anchoVentana < 400;
 const valores = window.location.search;
 const urlParams = new URLSearchParams(valores);
@@ -101,10 +102,10 @@ function App() {
     setInputValue(e.target.value);
   }
   return (
-    <>
+    <main style={{ overflowX: "hidden" }}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <nav className="topNav">
-          <Link to={"/Pokedex/"}>
+          <Link className="logoImg" to={"/Pokedex/"}>
             <img
               onClick={logoClickHandler}
               src="/Pokedex/pokemon-logo.svg"
@@ -125,71 +126,76 @@ function App() {
             <Button variant="outline">Habilidades</Button>
             <Button variant="outline">Items</Button>
             <Button variant="outline">Button</Button> */}
-
             <ModeToggle />
           </div>
         </nav>
+        <AnimatePresence>
+          <Routes>
+            <Route
+              path="/Pokedex/pokemon/:id"
+              element={
+                <>
+                  <Pokemon />
+                </>
+              }
+            />
+            <Route
+              path="/Pokedex"
+              element={
+                <>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ ease: "easeIn", duration: 1 }}
+                    className="pokedexContainer"
+                  >
+                    {!error ? (
+                      <></>
+                    ) : (
+                      <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertTitle>Error</AlertTitle>
+                        <AlertDescription>
+                          No se encontraron resultados para tu busqueda
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                    <div className="defaultPokemons">
+                      {loadingData ? <h2>Cargando...</h2> : pokeList}
+                    </div>
+                    <div className="Paginations">
+                      {showPagination ? (
+                        <Pagination>
+                          <PaginationContent>
+                            {offsetValue === 0 ? (
+                              <></>
+                            ) : (
+                              <PaginationItem>
+                                <PaginationPrevious
+                                  href={"?offset=" + (offsetValue - 12)}
+                                />
+                              </PaginationItem>
+                            )}
 
-        <Routes>
-          <Route
-            path="/Pokedex/pokemon/:id"
-            element={
-              <>
-                <Pokemon />
-              </>
-            }
-          />
-          <Route
-            path="/Pokedex"
-            element={
-              <>
-                <div className="pokedexContainer">
-                  {!error ? (
-                    <></>
-                  ) : (
-                    <Alert variant="destructive">
-                      <AlertCircle className="h-4 w-4" />
-                      <AlertTitle>Error</AlertTitle>
-                      <AlertDescription>
-                        No se encontraron resultados para tu busqueda
-                      </AlertDescription>
-                    </Alert>
-                  )}
-                  <div className="defaultPokemons">
-                    {loadingData ? <h2>Cargando...</h2> : pokeList}
-                  </div>
-                  <div className="Paginations">
-                    {showPagination ? (
-                      <Pagination>
-                        <PaginationContent>
-                          {offsetValue === 0 ? (
-                            <></>
-                          ) : (
                             <PaginationItem>
-                              <PaginationPrevious
-                                href={"?offset=" + (offsetValue - 12)}
+                              <PaginationNext
+                                href={"?offset=" + (offsetValue + 12)}
                               />
                             </PaginationItem>
-                          )}
-
-                          <PaginationItem>
-                            <PaginationNext
-                              href={"?offset=" + (offsetValue + 12)}
-                            />
-                          </PaginationItem>
-                        </PaginationContent>
-                      </Pagination>
-                    ) : (
-                      <hr />
-                    )}
-                  </div>
-                </div>
-              </>
-            }
-          ></Route>
-        </Routes>
+                          </PaginationContent>
+                        </Pagination>
+                      ) : (
+                        <hr />
+                      )}
+                    </div>
+                  </motion.div>
+                </>
+              }
+            ></Route>
+          </Routes>
+        </AnimatePresence>
       </ThemeProvider>
-    </>
+    </main>
   );
 }
 export default App;

@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { motion, useAnimate } from "framer-motion";
+
 import { Link, useParams } from "react-router-dom";
 import {
   Select,
@@ -37,8 +39,23 @@ const Pokemon = () => {
   if (param !== undefined) {
     id = parseInt(param);
   }
+  const [scope, animate] = useAnimate();
   const [dataReceived, setDataReceived] = useState<any>(null);
   useEffect(() => {
+    const enterAnimation = async () => {
+      await animate(
+        ".pokemonData",
+        { opacity: 0 },
+        { ease: "easeOut", duration: 0.1 }
+      );
+      await animate(
+        ".pokemonData",
+        { opacity: 1, x: 0 },
+        { ease: "easeIn", duration: 0.5 }
+      );
+    };
+    enterAnimation();
+
     fetch("https://pokeapi.co/api/v2/pokemon/" + id)
       .then((response) => response.json())
       .then((data: any) => {
@@ -89,7 +106,13 @@ const Pokemon = () => {
   console.log(dataReceived);
   return (
     <>
-      <div className="pokemonContainer">
+      <motion.div
+        ref={scope}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ ease: "easeIn", duration: 0.5 }}
+        className="pokemonContainer"
+      >
         <PokePagination id={id} />
         <div className="pokemonData">
           <div className="pokemonTitle">
@@ -115,14 +138,10 @@ const Pokemon = () => {
             <DiagramaDeStats data={dataStats} />
           </div>
           <div className="evolutionChain">
-            <EvolutionChain
-              id={id}
-              url={dataReceived.evolution_chain.url}
-              currentData={dataReceived}
-            />
+            <EvolutionChain url={dataReceived.evolution_chain.url} />
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };
@@ -294,7 +313,6 @@ function DiagramaDeStats({ data }: any) {
           height={350}
         />
       </div>
-      <div id="html-dist"></div>
     </div>
   );
 }
