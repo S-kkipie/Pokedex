@@ -18,11 +18,11 @@ function PokeList() {
 
   var param = useParams().offset;
   console.log(param);
-  var id: number = 15;
+  var id: number = 0;
   if (param !== undefined) {
     id = parseInt(param);
   }
-  let widhtItem = Math.floor(window.innerWidth / 200 - 1) * 3;
+  let widhtItem = Math.max(Math.floor(window.innerWidth / 200 - 1) * 3, 6);
 
   const [showPagination, setShowPagination] = useState(true);
   const [loadingData, setLoadingData] = useState(true);
