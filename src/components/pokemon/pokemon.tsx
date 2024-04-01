@@ -32,6 +32,7 @@ Object.defineProperty(String.prototype, "mayusculaPrimeraLetra", {
   writable: true,
   configurable: true,
 });
+
 //Codigo de pokemon
 const Pokemon = () => {
   var param = useParams().id;

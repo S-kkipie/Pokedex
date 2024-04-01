@@ -27,6 +27,7 @@ Object.defineProperty(String.prototype, "mayusculaPrimeraLetra", {
 });
 // let anchoVentana = window.innerWidth;
 //var mobile = anchoVentana < 400;
+let widhtItem = Math.floor(window.innerWidth / 200 - 1) * 3;
 const valores = window.location.search;
 const urlParams = new URLSearchParams(valores);
 var offset = urlParams.get("offset");
@@ -46,7 +47,12 @@ function App() {
     setError(false);
   }
   useEffect(() => {
-    fetch("https://pokeapi.co/api/v2/pokemon?limit=12&offset=" + offsetValue)
+    fetch(
+      "https://pokeapi.co/api/v2/pokemon?limit=" +
+        widhtItem +
+        "&offset=" +
+        offsetValue
+    )
       .then((response) => response.json())
       .then((data) => {
         const fetchPromises = data.results.map((value: any) => {
@@ -172,14 +178,14 @@ function App() {
                             ) : (
                               <PaginationItem>
                                 <PaginationPrevious
-                                  href={"?offset=" + (offsetValue - 12)}
+                                  href={"?offset=" + (offsetValue - widhtItem)}
                                 />
                               </PaginationItem>
                             )}
 
                             <PaginationItem>
                               <PaginationNext
-                                href={"?offset=" + (offsetValue + 12)}
+                                href={"?offset=" + (offsetValue + widhtItem)}
                               />
                             </PaginationItem>
                           </PaginationContent>
