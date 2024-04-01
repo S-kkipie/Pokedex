@@ -17,6 +17,7 @@ Object.defineProperty(String.prototype, "mayusculaPrimeraLetra", {
   writable: true,
   configurable: true,
 });
+
 // let anchoVentana = window.innerWidth;
 //var mobile = anchoVentana < 400;
 
@@ -35,6 +36,10 @@ function App() {
         setError(true);
       });
   }
+  window.addEventListener("beforeunload", function (event) {
+    event.preventDefault();
+    navigate("/Pokedex/0");
+  });
   function changeHandler(e: any) {
     setInputValue(e.target.value);
   }
