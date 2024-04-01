@@ -62,7 +62,9 @@ const Pokemon = () => {
         let dataReceived = data;
         fetch(data.species.url)
           .then((response) => response.json())
-          .then((data2) => setDataReceived({ ...dataReceived, ...data2 }));
+          .then((data2) => {
+            setDataReceived({ ...dataReceived, ...data2 });
+          });
       });
   }, [id]);
 

@@ -29,50 +29,51 @@ function PokeList() {
   const [pokeList, setPokeList] = useState<JSX.Element[]>([]);
   useEffect(() => {
     const enterAnimation = async () => {
-      await animate("*", { opacity: 0 }, { ease: "easeOut", duration: 0.1 });
-      await animate(
-        "*",
-        { opacity: 1, x: 0 },
-        { ease: "easeIn", duration: 0.5 }
-      );
+      await animate("*", { opacity: 0 }, { ease: "easeOut", duration: 0.2 });
+
+      fetch(
+        "https://pokeapi.co/api/v2/pokemon?limit=" + widhtItem + "&offset=" + id
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          const fetchPromises = data.results.map((value: any) => {
+            return fetch(value.url)
+              .then((response) => response.json())
+              .then((data) => {
+                return (
+                  <Link to={"/Pokedex/pokemon/" + data.id}>
+                    <PokemonItems
+                      key={data.id}
+                      imgSrc={
+                        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" +
+                        data.id +
+                        ".png"
+                      }
+                      id={data.id}
+                      name={data.name.mayusculaPrimeraLetra()}
+                      types={data.types.map(
+                        (types: {
+                          type: { name: { mayusculaPrimeraLetra: () => any } };
+                        }) => types.type.name.mayusculaPrimeraLetra()
+                      )}
+                    />
+                  </Link>
+                );
+              });
+          });
+          Promise.all(fetchPromises).then((pokemonComponents) => {
+            animate(
+              "*",
+              { opacity: 1, x: 0 },
+              { ease: "easeIn", duration: 0.5 }
+            );
+            setPokeList(pokemonComponents);
+            setLoadingData(false);
+            setShowPagination(true);
+          });
+        });
     };
     enterAnimation();
-    fetch(
-      "https://pokeapi.co/api/v2/pokemon?limit=" + widhtItem + "&offset=" + id
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const fetchPromises = data.results.map((value: any) => {
-          return fetch(value.url)
-            .then((response) => response.json())
-            .then((data) => {
-              return (
-                <Link to={"/Pokedex/pokemon/" + data.id}>
-                  <PokemonItems
-                    key={data.id}
-                    imgSrc={
-                      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" +
-                      data.id +
-                      ".png"
-                    }
-                    id={data.id}
-                    name={data.name.mayusculaPrimeraLetra()}
-                    types={data.types.map(
-                      (types: {
-                        type: { name: { mayusculaPrimeraLetra: () => any } };
-                      }) => types.type.name.mayusculaPrimeraLetra()
-                    )}
-                  />
-                </Link>
-              );
-            });
-        });
-        Promise.all(fetchPromises).then((pokemonComponents) => {
-          setPokeList(pokemonComponents);
-          setLoadingData(false);
-          setShowPagination(true);
-        });
-      });
   }, [id]);
   return (
     <>
