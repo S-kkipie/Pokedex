@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { motion, useAnimate } from "framer-motion";
-
 import { Link, useParams } from "react-router-dom";
 import {
   Select,
